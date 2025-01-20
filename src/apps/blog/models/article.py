@@ -9,9 +9,5 @@ class Article(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        app_label = "blog"
         ordering = ['-created']
-
-
-class Vote(models.Model):
-    voter = models.ForeignKey(User, on_delete=models.CASCADE)
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
