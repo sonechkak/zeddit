@@ -1,11 +1,12 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, mixins, status
 from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
 
 from ..models import Article, Vote
 from ..serializers.serializers import VoteSerializer
 
 
-class VoteCreate(generics.CreateAPIView):
+class VoteCreate(generics.CreateAPIView, mixins.DestroyModelMixin):
     serializer_class = VoteSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -23,3 +24,11 @@ class VoteCreate(generics.CreateAPIView):
         user = self.request.user
         article = Article.objects.get(pk=self.kwargs["pk"])
         serializer.save(voter=user, article=article)
+
+    def delete(self, request, *args, **kwargs):
+        """Удаление голоса"""
+        if self.get_queryset().exists():
+            self.get_queryset().delete()
+            return Response(status=status.HTTP_204_NO_CONTENT, data={"detail": "Голос успешно удален"})
+        else:
+            raise ValidationError("Вы еще не голосовали за эту статью")
