@@ -11,6 +11,4 @@ class ArticleListView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
-        if self.request.user.is_anonymous:
-            raise PermissionDenied("Вы не авторизованы")
         serializer.save(poster=self.request.user)

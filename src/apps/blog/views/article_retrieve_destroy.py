@@ -12,8 +12,8 @@ class ArticleRetrieveDestroyView(generics.RetrieveDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def delete(self, request, *args, **kwargs):
-        article = Article.objects.filter(pk=kwargs["pk"], poster=self.request.user)
-        if article.poster == self.request.user or self.request.user.is_superuser or self.request.user.is_staff:
+        article = Article.objects.filter(pk=kwargs["pk"], poster=request.user)
+        if article.exists():
             return self.destroy(request, *args, **kwargs)
         else:
-            raise PermissionDenied("Вы не можете удалить эту статью")
+            raise ValidationError("Вы не можете удалять статью. Вы не являетесь ее автором.")

@@ -11,7 +11,7 @@ app_name = "blog"
 
 urlpatterns = [
     path("articles/", article_list.ArticleListView.as_view(), name="article-list"),
-    path("articles/<int:pk>/", article_detail.ArticleDetailView.as_view(), name="article-detail"),
+    # path("articles/<int:pk>/", article_detail.ArticleDetailView.as_view(), name="article-detail"),
     path(
         "articles/<int:pk>/",
         article_retrieve_destroy.ArticleRetrieveDestroyView.as_view(),
