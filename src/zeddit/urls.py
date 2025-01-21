@@ -7,6 +7,8 @@ urlpatterns = [
     path("admin/", admin.site.urls, name="admin"),
     # API
     path("api/", include("api.urls", namespace="api")),
+    # Auth
+    path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     # Docs
     # DRF Spectacular : OpenAPI 3.0
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
